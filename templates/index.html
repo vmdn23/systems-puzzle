@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>Best store ever!</title>
+
 {% endblock %}
 
 
@@ -16,4 +16,6 @@
     <input type="submit" value="Enter Item">
 </form>
 
+<br>
+<b><a href={{url_for('success')}}>View All Items</a></b>
 {% endblock %}
