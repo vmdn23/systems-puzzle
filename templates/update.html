@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+<div class="content"></div>
+    <h1>Update Items</h1>
+
+    <div class="form">
+        <form method="POST">
+            {{ form.csrf_token }}
+            {{ form.name.label }} {{ form.name(size=20) }}
+            {{ form.quantity.label }} {{ form.quantity(size=4) }}
+            {{ form.description.label }} {{ form.description(size=4) }}         
+            <input type="submit" name='submit' value="Update">
+        </form>
+        
+    <br>
+    <b><a href={{url_for('success')}}>Back</a></b>
+    </div>
+{% endblock %}
