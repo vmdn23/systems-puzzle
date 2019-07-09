@@ -5,7 +5,7 @@
 2. [Introduction](README.md#introduction)
 3. [Puzzle details](README.md#puzzle-details)
 4. [Instructions to submit your solution](README.md#instructions-to-submit-your-solution)
-5. [FAQ](README.md#faq)
+5. [Postmortem](README.md#postmortem)
 
 # Understanding the puzzle
 
@@ -43,25 +43,38 @@ Once you've corrected the bugs and have the basic features working, commit the f
 * Link to the specific repo for this project, not your general profile
 * Put any comments in the README inside your project repo
 
-# FAQ
+***
+***
+***
 
-Here are some common questions we've received. If you have additional questions, please email us at `devops@insightdata.com` and we'll answer your questions as quickly as we can (during PST business hours), and update this FAQ. Again, only contact us after you have read through the Readme and FAQ one more time and cannot find the answer to your question.
+# Postmortem 
 
-### Which Github link should I submit?
-You should submit the URL for the top-level root of your repository. For example, this repo would be submitted by copying the URL `https://github.com/InsightDataScience/systems-puzzle` into the appropriate field on the application. **Do NOT try to submit your coding puzzle using a pull request**, which would make your source code publicly available.
+![](https://i.imgur.com/e16qOEj.gif)
 
-### Do I need a private Github repo?
-No, you may use a public repo, there is no need to purchase a private repo. You may also submit a link to a Bitbucket repo if you prefer.
+## Issue Summary & (Fictional) Timeline
+* 08:00 PDT - The on call engineer attempts to set up the app but cannot access it at localhost:8080.
+* 08:30 PDT - Not knowing much about docker-compose, they go and research about it and do some tutorials.
+* 11:30 PDT - After learning more about docker-compose, the engineer notices that there is an error in the docker-compose.yml file for the Nginx port. They change the incorret 80:8080 port to 8080:80.
+* 12:00 PDT - The engineer has trouble setting up the environment using vagrant so they decide to spin up an Ubuntu VM.
+* 13:00 PDT - After switching to the Ubuntu VM, the engineer manages to get a 502 gateway error. 
+* 14:30 PDT - They run the command docker-compose up without the detach option to see the log details.
+* 15:00 PDT - The logs show that flaskapp_1 was trying to run on port 5000. 
+* 15:15 PDT - The engineer finds the flaskapp.conf file and changed the proxy_pass http://flaskapp:5001 to 5000. They reran the docker-compose up command and get a 200 status code.
+* 16:00 PDT - They noticed that after entering the items nothing seem to happen so they manually got to localhost:8080/sucess and see [,,,,] and the app incorrectly redirects you to "localhost,localhost:8080".
+* 19:00 PDT - The engineer realizes that the CRUD functions aren't working and that the entering items is only adding empty values to a list because there is not representation of the item in the models.
+* 21:00 PDT - They add basic CRUD functionality to the app.
+* 2:00  PDT - The enginer resolves the incorrect redirects by investigating routing issues. After researching more about Nginx and reverseproxying they are able to fix the problem by modifiying the proxy set header for Host and server inside of the flaskapp.conf file.
+* 3:00  PDT - Problem resolved
 
-### What sort of system should I use to run my program (Windows, Linux, Mac)?
-You should use Docker to run and test your solution, which should work on any operating system. If you're unfamiliar with Docker, we recommend attending one of our Online Tech Talks on Docker, which you should've received information about in your invitation. Alternatively, there are ample free resources available on docker.com.
+## Root Causes
+Main issues:
+* Incorrect configuration of docker-compose.yml, Nginx port
+* Flask routing in flaskapp.conf, changed from 5001 to 5000 to match the port flaskapp_1 runs on when executing docker-compose up.
+* Improper redirects, was being redirected to "localhost,localhost:8080". Fix by modifiying proxy set header for Host and server inside of the flaskapp.conf file.
+* CRUD actions weren't working properly, adding an item was just adding empty values to a list because there is no representation of the item in the models.py or forms.py file.     
 
-### How will my solution be evaluated?
-While we will review your submission briefly before your interview, the main point of this puzzle is to serve as content for discussion during the interview. In the interview, we'll evaluate your problem solving and debugging skills based off how you solved this puzzle, so be sure to document your thought process.
-
-### This eCommerce site is ugly...should I improve the design?  
-No, you should focus on the functionality. Your engineering team will bring on a designer and front-end developer later in the process, so don't worry about that aspect in this puzzle. If you have extra time, it would be far better to focus on aspects that make the code cleaner and easier to use, like tests and refactoring.
-
-### Should I use orchestration tools like Kubernetes?
-While technologies like Kubernetes are quite powerful, they're likely overkill for the simple application in this puzzle. We recommend that you stick to Docker Compose for this puzzle.
-
+## Corrective and preventative measures
+* Don't set up the environment in a vagrant machine, there were issues with getting the ports to work.
+* In the future, pair programming with another engineer could prevent typos in the configurations.
+* A code review process or setting up a CI/CD pipeline with automated test would have caught the errors.
+* Need to migrate to a production WSGI server soon!
