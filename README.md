@@ -35,7 +35,7 @@ At that point, the web application should be visible by going to `localhost:8080
 ## Issue Summary & (Fictional) Timeline
 * 08:00 PDT - The on call engineer attempts to set up the app but cannot access it at localhost:8080.
 * 08:30 PDT - Not knowing much about docker-compose, they go and research about it and do some tutorials.
-* 11:30 PDT - After learning more about docker-compose, the engineer notices that there is an error in the docker-compose.yml file for the Nginx port. They change the incorret 80:8080 port to 8080:80.
+* 11:30 PDT - After learning more about docker-compose, the engineer notices that there is an error in the docker-compose.yml file for the Nginx port. They change the incorrect 80:8080 port to 8080:80.
 * 12:00 PDT - The engineer has trouble setting up the environment using vagrant so they decide to spin up an Ubuntu VM.
 * 13:00 PDT - After switching to the Ubuntu VM, the engineer manages to get a 502 gateway error. 
 * 14:30 PDT - They run the command docker-compose up without the detach option to see the log details.
