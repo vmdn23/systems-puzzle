@@ -1,15 +1,9 @@
-# Insight DevOps Engineering Systems Puzzle
+# Insight DevOps Engineering Systems Puzzle Challenge
 
 ## Table of Contents
-1. [Understanding the puzzle](README.md#understanding-the-puzzle)
-2. [Introduction](README.md#introduction)
-3. [Puzzle details](README.md#puzzle-details)
-4. [Instructions to submit your solution](README.md#instructions-to-submit-your-solution)
-5. [Postmortem](README.md#postmortem)
-
-# Understanding the puzzle
-
-We highly recommend that you take a few dedicated minutes to read this README in its entirety before starting to think about potential solutions. You'll probably find it useful to review the codebase and understand the system at a high-level before attempting to find specific bugs.
+1. [Introduction](README.md#introduction)
+2. [Puzzle details](README.md#puzzle-details)
+3. [Postmortem](README.md#postmortem)
 
 # Introduction
 
